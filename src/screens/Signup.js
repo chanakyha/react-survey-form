@@ -2,24 +2,24 @@ import { Button, Input } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { BiRename } from "react-icons/bi";
+import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-const Login = () => {
-  const history = useNavigate();
+const Signup = () => {
   const [details, setDetails] = useState({
+    name: "",
     email: "",
     password: "",
   });
 
-  const onLogin = () => {
+  const onSignup = () => {
+    !details.name && toast.error("Name is required");
     !details.email && toast.error("Email is required");
     !details.password && toast.error("Password is required");
 
     if (details.email && details.password) {
       toast.success("Login Successful");
-
-      history("/survey");
     }
   };
 
@@ -30,7 +30,14 @@ const Login = () => {
           <div className="text-2xl bg-green-200 m-5 shadow-lg p-5 flex justify-center rounded-lg">
             Logo
           </div>
+
           <div className="flex flex-col space-y-5 p-5 ">
+            <Input
+              value={details.name}
+              onChange={(e) => setDetails({ ...details, name: e.target.value })}
+              icon={<BiRename />}
+              label="Name"
+            />
             <Input
               value={details.email}
               onChange={(e) =>
@@ -49,23 +56,26 @@ const Login = () => {
               label="Password"
             />
           </div>
-          <div className="w-full flex justify-center">
-            <Button onClick={onLogin} color="Login">
+          <div className="w-full flex justify-center items-center gap-2">
+            <Button onClick={onSignup} color="Login">
               Login
             </Button>
+            or
+            <button className="text-4xl hover:bg-green-100 hover:rounded-lg p-1">
+              <FcGoogle />
+            </button>
           </div>
         </div>
-        <div className="flex flex-col">
-          <button className="hover:bg-red-100 hover:rounded-lg p-2 ease-in-out mt-7 text-red-500 text-sm">
-            Forget Password
-          </button>
-          <button className="text-red-500 hover:bg-red-100 p-2 hover:rounded-lg text-sm">
-            <Link to="/signup">Sign Up</Link>
-          </button>
-        </div>
+        <Link to="/">
+          <div className="flex flex-col">
+            <button className="hover:bg-red-100 hover:rounded-lg p-2 ease-in-out mt-4 text-red-500 text-sm">
+              Sign In
+            </button>
+          </div>
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
